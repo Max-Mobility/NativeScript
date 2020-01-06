@@ -1,29 +1,17 @@
 // Definitions.
-import { Point, CustomLayoutView as CustomLayoutViewDefinition, dip } from ".";
-import { GestureTypes, GestureEventData } from "../../gestures";
-// Types.
-import {
-    ViewCommon, layout, isEnabledProperty, originXProperty, originYProperty, automationTextProperty, isUserInteractionEnabledProperty,
-    traceEnabled, traceWrite, traceCategories, traceNotifyEvent,
-    paddingLeftProperty, paddingTopProperty, paddingRightProperty, paddingBottomProperty,
-    Color, EventData, ShowModalOptions
-} from "./view-common";
-
-import {
-    Length, PercentLength, Visibility, HorizontalAlignment, VerticalAlignment,
-    visibilityProperty, opacityProperty, horizontalAlignmentProperty, verticalAlignmentProperty,
-    minWidthProperty, minHeightProperty, widthProperty, heightProperty,
-    marginLeftProperty, marginTopProperty, marginRightProperty, marginBottomProperty,
-    rotateProperty, scaleXProperty, scaleYProperty, translateXProperty, translateYProperty,
-    zIndexProperty, backgroundInternalProperty, androidElevationProperty, androidDynamicElevationOffsetProperty
-} from "../../styling/style-properties";
-
-import { Background, ad as androidBackground } from "../../styling/background";
-import { profile } from "../../../profiling";
-import { topmost } from "../../frame/frame-stack";
-import { AndroidActivityBackPressedEventData, android as androidApp } from "../../../application";
+import { CustomLayoutView as CustomLayoutViewDefinition, dip, Point } from ".";
+import { android as androidApp, AndroidActivityBackPressedEventData } from "../../../application";
 import { device } from "../../../platform";
+import { profile } from "../../../profiling";
 import lazy from "../../../utils/lazy";
+import { topmost } from "../../frame/frame-stack";
+import { GestureEventData, GestureTypes } from "../../gestures";
+import { ad as androidBackground, Background } from "../../styling/background";
+import { androidDynamicElevationOffsetProperty, androidElevationProperty, backgroundInternalProperty, heightProperty, HorizontalAlignment, horizontalAlignmentProperty, Length, marginBottomProperty, marginLeftProperty, marginRightProperty, marginTopProperty, minHeightProperty, minWidthProperty, opacityProperty, PercentLength, rotateProperty, scaleXProperty, scaleYProperty, translateXProperty, translateYProperty, VerticalAlignment, verticalAlignmentProperty, Visibility, visibilityProperty, widthProperty, zIndexProperty } from "../../styling/style-properties";
+// Types.
+import { automationTextProperty, EventData, isEnabledProperty, isUserInteractionEnabledProperty, layout, originXProperty, originYProperty, paddingBottomProperty, paddingLeftProperty, paddingRightProperty, paddingTopProperty, ShowModalOptions, traceCategories, traceEnabled, traceNotifyEvent, traceWrite, ViewCommon } from "./view-common";
+
+
 
 export * from "./view-common";
 
@@ -163,11 +151,15 @@ function initializeDialogFragment() {
             this._shownCallback = options.shownCallback;
             this.setStyle(androidx.fragment.app.DialogFragment.STYLE_NO_TITLE, 0);
 
-            let theme = this.getTheme();
-            if (this._fullscreen) {
-                // In fullscreen mode, get the application's theme.
-                theme = this.getActivity().getApplicationInfo().theme;
-            }
+            // let theme = this.getTheme();
+
+            // for swipe dismiss modals on WearOS apps
+            const theme = (com as any).permobil.smartdrive.wearos.R.style.SwipeableActivityTheme;
+          
+            // if (this._fullscreen) {
+            //     // In fullscreen mode, get the application's theme.
+            //     theme = this.getActivity().getApplicationInfo().theme;
+            // }
 
             const dialog = new DialogImpl(this, this.getActivity(), theme);
 
